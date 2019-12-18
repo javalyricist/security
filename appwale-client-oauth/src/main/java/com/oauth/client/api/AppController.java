@@ -20,10 +20,20 @@ public class AppController {
     public String login() {
         return "login";
     }
-
+    
+    @GetMapping("/error")
+    public String error() {
+        return "error";
+    }
+    
     @GetMapping("/access-denied")
     public String accessDenied() {
         return "/error/access-denied";
+    }
+    
+    @GetMapping("/AppwaleContentScreen")
+    public String appwaleContentScreen() {
+        return "/AppwaleContentScreen";
     }
 
 }
