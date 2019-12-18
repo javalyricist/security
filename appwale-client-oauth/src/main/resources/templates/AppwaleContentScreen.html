@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Index</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h1>OAuth2 Consent Screen</h1>
+    <p>Welcome to user: </p>
+     <h2>Authorization Code: <span th:text="${authCode}" id="auth-code"></span></h2>
+     <h2>Access Token: <span th:text="${token}" id="token"></span></h2>
+    <ul>
+    
+        <li>Auth Code <a href="/getAuthCode" th:href="@{/getAuthCode}"> Auth Code </a></li>
+        <li>Token <a href="/getToken" th:href="@{/getToken}"> Token </a></li>
+    </ul>
+</div>
+</body>
+</html>
