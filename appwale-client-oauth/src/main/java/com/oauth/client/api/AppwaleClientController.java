@@ -19,16 +19,16 @@ public class AppwaleClientController {
 	@Autowired
 	private AppwaleService appwaleService;
 	
-	@Value("{appwale.auth.code_url}")
+	@Value("${appwale.auth.code_url}")
 	private String codeUrl;
 	
-	@Value("{appwale.auth.response_type}")
+	@Value("${appwale.auth.response_type}")
 	private String responseType;
 	
-	@Value("{appwale.auth.client_id}")
+	@Value("${appwale.auth.client_id}")
 	private String clientId;
 	
-	@Value("{appwale.auth.redirect_uri}")
+	@Value("${appwale.auth.redirect_uri}")
 	private String redirectUri;
 	
 	private String authCode;
@@ -50,7 +50,8 @@ public class AppwaleClientController {
 	
 	@GetMapping("/getAuthCode")
     public String redirect() {
-        return String.format("redirect:[{}]?response_type=[{}]&client_id=[{}]&redirect_uri=[{}]",codeUrl,responseType,clientId,redirectUri);
+		System.out.println(String.format("redirect:[{}]?response_type=[{}]&client_id=[{}]&redirect_uri=[{}]",codeUrl,responseType,clientId,redirectUri));
+        return String.format("redirect:%s?response_type=%s&client_id=%s&redirect_uri=%s",codeUrl,responseType,clientId,redirectUri);
     }
 	
 	@GetMapping("/getToken")
