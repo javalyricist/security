@@ -21,61 +21,60 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AppwaleServiceImpl implements AppwaleService {
-	
-	@Value("{appwale.auth.client_id}")
+
+	@Value("${appwale.auth.client_id}")
 	private String clientId;
-	
-	@Value("{appwale.auth.client_secret}")
+
+	@Value("${appwale.auth.client_secret}")
 	private String clientSecret;
-	
-	@Value("{appwale.auth.server.url}")
+
+	@Value("${appwale.auth.server.url}")
 	private String authServerUrl;
-	
-	@Value("{appwale.auth.redirect_uri}")
+
+	@Value("${appwale.auth.redirect_uri}")
 	private String redirectUri;
-	
-	@Value("{appwale.auth.grant_type}")
+
+	@Value("${appwale.auth.grant_type}")
 	private String grantType;
 
-	
+	public JSONObject getToken(String authCode) throws IOException, JSONException {
 
-    public JSONObject getToken(String authCode) throws IOException, JSONException {
+		CloseableHttpClient client = HttpClients.createDefault();
 
-    	CloseableHttpClient client = HttpClients.createDefault();
+		HttpPost httpPost = new HttpPost(authServerUrl);
 
-        HttpPost httpPost = new HttpPost(authServerUrl);
+		httpPost.setHeader("Authorization", getCredential());
 
-        httpPost.setHeader("Authorization", getCredential());
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("client_id", clientId));
+		params.add(new BasicNameValuePair("redirect_uri", redirectUri));
+		params.add(new BasicNameValuePair("code", authCode));
+		params.add(new BasicNameValuePair("grant_type", grantType));
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("client_id", clientId));
-        params.add(new BasicNameValuePair("redirect_uri", redirectUri));
-        params.add(new BasicNameValuePair("code", authCode));
-        params.add(new BasicNameValuePair("grant_type", grantType));
+		httpPost.setEntity(new UrlEncodedFormEntity(params));
 
-        httpPost.setEntity(new UrlEncodedFormEntity(params));
+		CloseableHttpResponse response = client.execute(httpPost);
 
-        CloseableHttpResponse response = client.execute(httpPost);
+		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
 
-        StringBuffer result = new StringBuffer();
-        String line = "";
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
-        }
+		System.out.println(result.toString());
 
-        System.out.println(result.toString());
+		JSONObject jsonObject = new JSONObject(result.toString());
 
-        JSONObject jsonObject = new JSONObject(result.toString());
+		client.close();
 
-        client.close();
+		return jsonObject;
+	}
 
-        return jsonObject;
-    }
-    
-   public String getCredential() {
-   return  "Basic "+ Base64.getEncoder().encodeToString(String.format(":", clientId,clientSecret).getBytes());
-   }
+	public String getCredential() {
+		String userDetail = String.join(":", clientId, clientSecret);
+		return "Basic " + Base64.getEncoder().encodeToString(userDetail.getBytes());
+	}
 
 }

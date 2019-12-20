@@ -1,15 +1,27 @@
 package com.oauth.client.api;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
+import org.apache.http.Header;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.oauth.client.service.AppwaleService;
 
@@ -36,10 +48,11 @@ public class AppwaleClientController {
 	
 
 	@GetMapping("/authCode")
-    public String showAuthCode(@RequestParam("code") String authCode, Model model) {
+    public ModelAndView showAuthCode(@RequestParam("code") String authCode, ModelAndView model) {
         this.authCode=authCode;
-        model.addAttribute("authCode", authCode);
-        return "AppwaleContentScreen";
+        model.addObject("authCode", authCode);
+        model.setViewName("AppwaleContentScreen");
+        return model;
     }
 	
 	@GetMapping("/token")
@@ -49,17 +62,20 @@ public class AppwaleClientController {
     }
 	
 	@GetMapping("/getAuthCode")
-    public String redirect() {
-		System.out.println(String.format("redirect:[{}]?response_type=[{}]&client_id=[{}]&redirect_uri=[{}]",codeUrl,responseType,clientId,redirectUri));
-        return String.format("redirect:%s?response_type=%s&client_id=%s&redirect_uri=%s",codeUrl,responseType,clientId,redirectUri);
-    }
+    public ModelAndView redirect() throws ClientProtocolException, IOException {
+		String url = String.format("%s?response_type=%s&client_id=%s&redirect_uri=%s", codeUrl, responseType,
+				clientId, redirectUri);
+		System.out.println(url);
+		return new ModelAndView("redirect:"+url);
+	}
 	
 	@GetMapping("/getToken")
-    public String getToken(Model model) throws IOException, JSONException {
+    public ModelAndView getToken(ModelAndView model) throws IOException, JSONException {
         JSONObject jsonObject = appwaleService.getToken(this.authCode);
         this.token = (String) jsonObject.get("access_token");
-        model.addAttribute("authCode", "Auth Code Expired");
-        model.addAttribute("token", token);
-        return "AppwaleContentScreen";
-    }
+        model.addObject("authCode", "Auth Code Expired");
+        model.addObject("token", token);
+        model.setViewName("AppwaleContentScreen");
+       return model;
+	}
 }

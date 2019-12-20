@@ -3,7 +3,7 @@ server:
 appwale:   
    auth:   
       server:
-         url:  http://localhost:8085/oauth/token 
+         url: http://localhost:8085/oauth/token 
       client_id:   acme
       client_secret:   acmesecret
       redirect_uri:   http://127.0.0.1:8084/authCode
