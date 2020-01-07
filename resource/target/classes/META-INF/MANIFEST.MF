@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: resource
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Amit.Kumar12
+Implementation-Vendor-Id: com.resource
+Build-Jdk: 1.8.0_211
+Implementation-URL: http://projects.spring.io/spring-boot/resource/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
