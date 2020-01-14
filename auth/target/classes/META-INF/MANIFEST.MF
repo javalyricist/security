@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: auth
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Amit.Kumar12
+Implementation-Vendor-Id: com.auth
+Build-Jdk: 1.8.0_211
+Implementation-URL: http://projects.spring.io/spring-boot/auth/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
