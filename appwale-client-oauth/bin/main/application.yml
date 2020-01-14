@@ -1,0 +1,36 @@
+server:   
+   port : 8084
+appwale:   
+   auth:   
+      server:
+         url: http://localhost:8085/oauth/token 
+      client_id:   acme
+      client_secret:   acmesecret
+      redirect_uri:   http://127.0.0.1:8084/authCode
+      code:   
+      grant_type:   authorization_code
+      response_type : code 
+      code_url: http://localhost:8085/oauth/authorize
+      
+spring:
+  thymeleaf:
+    cache: false
+    check-template: true
+    check-template-location: true
+    content-type: text/html
+    enabled: true
+    encoding: UTF-8
+    mode: HTML
+    prefix: classpath:/templates/
+    suffix: .html
+    # excluded-view-names:
+    # template-resolver-order:
+    # view-names:
+
+logging:
+  level:
+    root: WARN
+    com.memorynotfound: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+      

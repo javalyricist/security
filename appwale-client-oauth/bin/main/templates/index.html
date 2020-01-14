@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Index</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h1>Hello for OAuth2</h1>
+    <p>This is demo for oAuth Security</p>
+    <ul>
+        <li>Go to the <a href="/login" th:href="@{/login}"> login Page</a></li>
+        
+    </ul>
+</div>
+</body>
+</html>
